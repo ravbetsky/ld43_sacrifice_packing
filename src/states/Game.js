@@ -53,7 +53,7 @@ export default class extends Phaser.State {
       return sprite;
     })
 
-    const types = ['Human', 'Pig', 'Cow', 'Goat'].sort(() => Math.random() - Math.random())
+    const types = Phaser.ArrayUtils.shuffle(['Human', 'Pig', 'Cow', 'Goat'])
     this.houses = this.map.objects.houses.map((data, i) => {
       const tile = this.map.getTileWorldXY(data.x, data.y, 48, 48, this.layerBg);
       const house = new House({
@@ -81,12 +81,16 @@ export default class extends Phaser.State {
     const startPoint = this.map.objects.points.find((point) => point.name === 'start')
     const tileStart = this.map.getTileWorldXY(startPoint.x, startPoint.y, 48, 48, this.layerPath)
 
+    const music = this.game.add.audio('ost');
+
     this.createTrolley(tileStart);
+
+    music.play();
 
     let counter = 1;
 
     const trolleyCreator = () => {
-      if (counter === 40) {
+      if (counter === 25) {
         return false;
       }
       setTimeout(() => {
@@ -99,14 +103,16 @@ export default class extends Phaser.State {
     trolleyCreator();
 
     function getCreatorTimeout(c) {
-      if (c < 6) {
+      if (c < 3) {
         return CREATE_INTERVALS[0]()
-      } else if (c < 15) {
+      } else if (c < 8) {
         return CREATE_INTERVALS[1]()
-      } else if (c < 30) {
+      } else if (c < 12) {
         return CREATE_INTERVALS[2]()
-      } else {
+      } else if (c < 20){
         return CREATE_INTERVALS[3]()
+      } else {
+        return CREATE_INTERVALS[1]()
       }
     }
   }
@@ -131,7 +137,7 @@ export default class extends Phaser.State {
     spriteTrolley.body.collideWorldBounds = false;
     spriteTrolley.body.velocity.x = SPEED;
 
-    const type = ['Human', 'Pig', 'Cow', 'Goat'].sort(() => Math.random() - Math.random())[0]
+    const type = Phaser.ArrayUtils.getRandomItem(['Human', 'Pig', 'Cow', 'Goat'])
     const victim = new Victim({
         game: this.game,
         x: spriteTrolley.worldX,
