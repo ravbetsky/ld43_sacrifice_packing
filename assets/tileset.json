@@ -1,0 +1,10 @@
+{
+ "tileproperties": {
+    "1": { "direction":"vertical" },
+    "2": { "direction":"horizontal" },
+    "3": { "direction":"left_top" },
+    "4": { "direction":"left_bottom" },
+    "5": { "direction":"top_right" },
+    "6": { "direction":"bottom_right" }
+  }
+}
